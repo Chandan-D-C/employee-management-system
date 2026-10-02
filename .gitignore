@@ -6,7 +6,7 @@ target/
 *.class
 
 # IDE - VS Code
-.vscode/
+
 *.code-workspace
 
 # IDE - IntelliJ IDEA
