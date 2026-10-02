@@ -1,0 +1,40 @@
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Java
+*.class
+
+# IDE - VS Code
+.vscode/
+*.code-workspace
+
+# IDE - IntelliJ IDEA
+.idea/
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment / secrets
+.env
+.env.*
+application-local.properties
+application-secret.properties
+
+# Build files
+*.jar
+*.war
+
+# Temporary files
+*.tmp
+*.temp
