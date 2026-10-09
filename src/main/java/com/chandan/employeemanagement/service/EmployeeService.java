@@ -40,4 +40,8 @@ public Employee updateEmployee(Long id, Employee updatedEmployee) {
 
     return employeeRepository.save(existingEmployee);
 }
+public void deleteEmployee(Long id) {
+    Employee employee = getEmployeeById(id);
+    employeeRepository.delete(employee);
+}
 }

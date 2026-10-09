@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.util.List;
 
@@ -39,5 +40,9 @@ public Employee updateEmployee(
         @PathVariable Long id,
         @RequestBody Employee employee) {
     return employeeService.updateEmployee(id, employee);
+}
+@DeleteMapping("/api/employees/{id}")
+public void deleteEmployee(@PathVariable Long id) {
+    employeeService.deleteEmployee(id);
 }
 }
