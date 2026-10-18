@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -28,21 +29,23 @@ public class EmployeeController {
     }
 
     @PostMapping("/api/employees")
-    public Employee addEmployee(@RequestBody Employee employee) {
-        return employeeService.addEmployee(employee);
-    }
+    public Employee addEmployee(@Valid @RequestBody Employee employee) {
+    return employeeService.addEmployee(employee);
+}
+    
     @GetMapping("/api/employees/{id}")
-public Employee getEmployeeById(@PathVariable Long id) {
-    return employeeService.getEmployeeById(id);
+    public Employee getEmployeeById(@PathVariable Long id) {
+        return employeeService.getEmployeeById(id);
+    }
+    @PutMapping("/api/employees/{id}")
+    public Employee updateEmployee(
+            @PathVariable Long id,
+            @Valid @RequestBody Employee employee) {
+        return employeeService.updateEmployee(id, employee);
 }
-@PutMapping("/api/employees/{id}")
-public Employee updateEmployee(
-        @PathVariable Long id,
-        @RequestBody Employee employee) {
-    return employeeService.updateEmployee(id, employee);
-}
-@DeleteMapping("/api/employees/{id}")
-public void deleteEmployee(@PathVariable Long id) {
-    employeeService.deleteEmployee(id);
-}
-}
+    
+    @DeleteMapping("/api/employees/{id}")
+    public void deleteEmployee(@PathVariable Long id) {
+        employeeService.deleteEmployee(id);
+    }
+    }
