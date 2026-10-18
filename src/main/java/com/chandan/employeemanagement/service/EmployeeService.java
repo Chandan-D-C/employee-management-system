@@ -4,6 +4,7 @@ package com.chandan.employeemanagement.service;
 import com.chandan.employeemanagement.entity.Employee;
 import com.chandan.employeemanagement.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
+import com.chandan.employeemanagement.exception.EmployeeNotFoundException;
 
 import java.util.List;
 
@@ -26,7 +27,9 @@ public class EmployeeService {
 public Employee getEmployeeById(Long id) {
     return employeeRepository.findById(id)
             .orElseThrow(() ->
-                    new RuntimeException("Employee not found with id: " + id));
+                    new EmployeeNotFoundException(
+                            "Employee not found with id: " + id));
+
 }
 
 public Employee updateEmployee(Long id, Employee updatedEmployee) {
