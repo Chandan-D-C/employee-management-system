@@ -20,8 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.List;
 
@@ -84,5 +83,16 @@ public Page<Employee> getEmployees(
     Pageable pageable = PageRequest.of(page, size, sort);
 
     return employeeService.getEmployees(pageable);
+}
+@GetMapping("/search/name")
+public List<Employee> searchByFirstName(
+        @RequestParam String firstName) {
+    return employeeService.searchEmployeesByFirstName(firstName);
+}
+
+@GetMapping("/search/department")
+public List<Employee> searchByDepartment(
+        @RequestParam String department) {
+    return employeeService.searchEmployeesByDepartment(department);
 }
 }

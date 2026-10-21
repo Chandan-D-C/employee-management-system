@@ -52,4 +52,13 @@ public void deleteEmployee(Long id) {
 public Page<Employee> getEmployees(Pageable pageable) {
     return employeeRepository.findAll(pageable);
 }
+public List<Employee> searchEmployeesByFirstName(String firstName) {
+    return employeeRepository
+            .findByFirstNameContainingIgnoreCase(firstName);
+}
+
+public List<Employee> searchEmployeesByDepartment(String department) {
+    return employeeRepository
+            .findByDepartmentIgnoreCase(department);
+}
 }
