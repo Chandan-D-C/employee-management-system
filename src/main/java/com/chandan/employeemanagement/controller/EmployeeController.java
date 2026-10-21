@@ -14,6 +14,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -56,4 +64,25 @@ public class EmployeeController {
         employeeService.deleteEmployee(id);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/page")
+public Page<Employee> getEmployees(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "5") int size,
+        @RequestParam(defaultValue = "id") String sortBy,
+        @RequestParam(defaultValue = "asc") String direction) {
+            if (page < 0 || size < 1 || size > 100) {
+    throw new ResponseStatusException(
+            HttpStatus.BAD_REQUEST,
+            "Page must be non-negative and size must be between 1 and 100"
+    );
+}
+
+    Sort sort = direction.equalsIgnoreCase("desc")
+            ? Sort.by(sortBy).descending()
+            : Sort.by(sortBy).ascending();
+
+    Pageable pageable = PageRequest.of(page, size, sort);
+
+    return employeeService.getEmployees(pageable);
+}
 }

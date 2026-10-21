@@ -7,6 +7,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.chandan.employeemanagement.exception.EmployeeNotFoundException;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatusCode;
 
 
 
@@ -36,5 +38,16 @@ public ResponseEntity<Map<String, String>> handleEmployeeNotFound(
     error.put("error", ex.getMessage());
 
     return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+}
+@ExceptionHandler(ResponseStatusException.class)
+public ResponseEntity<Map<String, String>> handleResponseStatusException(
+        ResponseStatusException ex) {
+
+    Map<String, String> error = new HashMap<>();
+    error.put("error", ex.getReason());
+
+    HttpStatusCode status = ex.getStatusCode();
+
+    return new ResponseEntity<>(error, status);
 }
 }
