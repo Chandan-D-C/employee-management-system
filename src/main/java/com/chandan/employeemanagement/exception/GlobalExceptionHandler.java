@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.chandan.employeemanagement.exception.EmployeeNotFoundException;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.dao.DataIntegrityViolationException;
 
 
 
@@ -49,5 +50,14 @@ public ResponseEntity<Map<String, String>> handleResponseStatusException(
     HttpStatusCode status = ex.getStatusCode();
 
     return new ResponseEntity<>(error, status);
+}
+@ExceptionHandler(DataIntegrityViolationException.class)
+public ResponseEntity<Map<String, String>> handleDataIntegrityViolation(
+        DataIntegrityViolationException ex) {
+
+    Map<String, String> error = new HashMap<>();
+    error.put("error", "Database constraint violation. Please check your input.");
+
+    return new ResponseEntity<>(error, HttpStatus.CONFLICT);
 }
 }
