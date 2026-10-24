@@ -1,20 +1,17 @@
 
 package com.chandan.employeemanagement.exception;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import com.chandan.employeemanagement.exception.EmployeeNotFoundException;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.dao.DataIntegrityViolationException;
-
-
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -31,33 +28,39 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(EmployeeNotFoundException.class)
-public ResponseEntity<Map<String, String>> handleEmployeeNotFound(
-        EmployeeNotFoundException ex) {
+    public ResponseEntity<Map<String, String>> handleEmployeeNotFound(
+            EmployeeNotFoundException ex) {
 
-    Map<String, String> error = new HashMap<>();
-    error.put("error", ex.getMessage());
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
 
-    return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-}
-@ExceptionHandler(ResponseStatusException.class)
-public ResponseEntity<Map<String, String>> handleResponseStatusException(
-        ResponseStatusException ex) {
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
 
-    Map<String, String> error = new HashMap<>();
-    error.put("error", ex.getReason());
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<Map<String, String>> handleResponseStatusException(
+            ResponseStatusException ex) {
 
-    HttpStatusCode status = ex.getStatusCode();
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getReason());
 
-    return new ResponseEntity<>(error, status);
-}
-@ExceptionHandler(DataIntegrityViolationException.class)
-public ResponseEntity<Map<String, String>> handleDataIntegrityViolation(
-        DataIntegrityViolationException ex) {
+        HttpStatusCode status = ex.getStatusCode();
 
-    Map<String, String> error = new HashMap<>();
-    error.put("error", "Database constraint violation. Please check your input.");
+        return new ResponseEntity<>(error, status);
+    }
 
-    return new ResponseEntity<>(error, HttpStatus.CONFLICT);
-}
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, String>> handleDataIntegrityViolation(
+            DataIntegrityViolationException ex) {
+
+        Map<String, String> error = new HashMap<>();
+        error.put(
+                "error",
+                "Database constraint violation. Please check your input."
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
 }

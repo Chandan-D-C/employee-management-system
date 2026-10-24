@@ -14,6 +14,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import java.util.Map;
+
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import com.chandan.employeemanagement.exception.GlobalExceptionHandler;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -156,4 +164,22 @@ class EmployeeManagementSystemApplicationTests {
                 .andExpect(jsonPath("$.department").value("Data Science"))
                 .andExpect(jsonPath("$.salary").value(45000));
     }
+    @Test
+void handleDataIntegrityViolationShouldReturnConflict() {
+
+    GlobalExceptionHandler handler = new GlobalExceptionHandler();
+
+    DataIntegrityViolationException exception =
+            new DataIntegrityViolationException("Duplicate email");
+
+    ResponseEntity<Map<String, String>> response =
+            handler.handleDataIntegrityViolation(exception);
+
+    assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+
+    assertEquals(
+            "Database constraint violation. Please check your input.",
+            response.getBody().get("error")
+    );
+}
 }
