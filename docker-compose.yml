@@ -1,0 +1,11 @@
+services:
+  employee-app:
+    image: employee-management-system:latest
+    container_name: employee-app
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://host.docker.internal:3306/employee_db
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    restart: unless-stopped
